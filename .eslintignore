@@ -1,0 +1,6 @@
+dist/
+assets/
+node_modules/
+.snapshots/
+*.min.js
+mongo/

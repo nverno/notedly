@@ -1,0 +1,8 @@
+@tailwind base;
+@layer base {
+  html {
+    line-height: normal;
+  }
+}
+@tailwind components;
+@tailwind utilities;
