@@ -24,34 +24,10 @@
 import mongoose from 'mongoose';
 import { DB_HOST, DB_PORT, DB_DATABASE } from '@config';
 
-export const dbConnection = {
+export const dbConnection: { url: string; options: mongoose.ConnectOptions } = {
   url: `mongodb://${DB_HOST}:${DB_PORT}/${DB_DATABASE}`,
   options: {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    // useFindAndModify: false,
+    // useNewUrlParser: true,
+    autoCreate: true, // create index
   },
 };
-
-// export default {
-//   connect: DB
-// }
-// module.exports = {
-// connect: DB_HOST => {
-// // Use the Mongo driver's updated URL string parser
-// mongoose.set('useNewUrlParser', true);
-// // Use findOneAndUpdate() in place of findAndModify()
-// mongoose.set('useFindAndModify', false);
-// // Use createIndex() in place of ensureIndex()
-// mongoose.set('useCreateIndex', true);
-// // Use the new server discovery and monitoring engine
-// mongoose.set('useUnifiedTopology', true);
-// // Connect to the DB
-// mongoose.connect(DB_HOST);
-// // Log an error if we fail to connect
-// mongoose.connection.on('error', err => {
-// console.error(err);
-// console.log(
-// 'MongoDB connection error. Please make sure MongoDB is running.'
-// );
-// process.exit();

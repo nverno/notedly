@@ -1,7 +1,7 @@
-import { User } from '@interfaces';
+import { IUser } from '@interfaces';
 
 export interface DataStoredInToken {
-  id: number;
+  _id: string;
 }
 
 export interface TokenData {
@@ -10,5 +10,5 @@ export interface TokenData {
 }
 
 export interface RequestWithUser {
-  user: User;
+  user: IUser;
 }

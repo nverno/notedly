@@ -28,8 +28,10 @@
       "@exceptions/*": ["exceptions/*"],
       "@interfaces/*": ["interfaces/*"],
       "@middlewares/*": ["middlewares/*"],
+      "@models/*": ["models/*"],
       "@repositories/*": ["repositories/*"],
       "@resolvers/*": ["resolvers/*"],
+      "@schemas/*": ["schemas/*"],
       "@typedefs/*": ["typedefs/*"],
       "@utils/*": ["utils/*"]
     }

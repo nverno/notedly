@@ -10,13 +10,14 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
-import { connect, set } from 'mongoose';
-import { buildSchema } from 'type-graphql';
+import mongoose from 'mongoose';
+// import { buildSchema } from 'type-graphql';
 // import { createConnection } from 'typeorm';
-import { NODE_ENV, PORT, ORIGIN, CREDENTIALS } from '@config';
+import { API_PATH, NODE_ENV, PORT, ORIGIN, CREDENTIALS } from '@config';
 import { dbConnection } from '@databases';
 import { authMiddleware, authChecker, errorMiddleware } from '@middlewares';
 import { logger, responseLogger, errorLogger } from '@utils';
+import { schema } from '@schemas';
 
 class App {
   public app: express.Application;
@@ -39,7 +40,9 @@ class App {
       logger.info(`=================================`);
       logger.info(`======= ENV: ${this.env} =======`);
       logger.info(`🚀 App listening on the port ${this.port}`);
-      logger.info(`🎮 http://localhost:${this.port}/api`);
+      logger.info(
+        `🎮 GraphQL Server running at http://localhost:${this.port}/${API_PATH}`,
+      );
       logger.info(`=================================`);
     });
   }
@@ -50,10 +53,9 @@ class App {
 
   private connectToDatabase() {
     if (this.env !== 'production') {
-      set('debug', true);
+      mongoose.set('debug', true);
     }
-    connect(dbConnection.url, dbConnection.options);
-    // createConnection(dbConnection);
+    mongoose.connect(dbConnection.url, dbConnection.options);
   }
 
   private initializeMiddlewares() {
@@ -69,11 +71,11 @@ class App {
     this.app.use(cookieParser());
   }
 
-  private async initApolloServer(resolvers) {
-    const schema = await buildSchema({
-      resolvers,
-      authChecker,
-    });
+  private async initApolloServer(_resolvers) {
+    // const schema = await buildSchema({
+    //   resolvers,
+    //   authChecker,
+    // });
 
     const apolloServer = new ApolloServer({
       schema,
@@ -103,7 +105,16 @@ class App {
     });
 
     await apolloServer.start();
-    apolloServer.applyMiddleware({ app: this.app, cors: ORIGIN, path: '/api' });
+    apolloServer.applyMiddleware({
+      app: this.app,
+      cors: ORIGIN,
+      path: `/${API_PATH}`,
+      onHealthCheck: () =>
+        new Promise((resolve, reject) => {
+          if (mongoose.connection.readyState > 0) resolve(null);
+          else reject();
+        }),
+    });
   }
 
   private initializeErrorHandling() {

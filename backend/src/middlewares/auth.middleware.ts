@@ -1,10 +1,9 @@
 import { verify } from 'jsonwebtoken';
 import { AuthChecker } from 'type-graphql';
-import { getRepository } from 'typeorm';
 import { SECRET_KEY } from '@config';
-import { UserEntity } from '@entities';
 import { HttpException } from '@exceptions';
 import { RequestWithUser, DataStoredInToken } from '@interfaces';
+import { User } from '@models';
 
 export const authMiddleware = async (req) => {
   try {
@@ -15,12 +14,10 @@ export const authMiddleware = async (req) => {
         : null);
     if (Authorization) {
       const secretKey: string = SECRET_KEY;
-      const { id } = (await verify(Authorization, secretKey)) as DataStoredInToken;
-      const userRepository = getRepository(UserEntity);
-      const findUser = await userRepository.findOne(id, {
-        select: ['id', 'email', 'password'],
-      });
-      return findUser;
+      const resp = (await verify(Authorization, secretKey)) as DataStoredInToken;
+      const userId = resp._id;
+      const user = await User.findById(userId);
+      if (!user) throw new HttpException(401, 'Wrong authentication token');
     }
 
     return null;

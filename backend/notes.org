@@ -1,0 +1,25 @@
+#+TITLE: Notedly backend
+
+* Todo
+** TODO remove type-graphql
+- folders :: typedefs, resolvers
+- packages :: type-graphql, reflect-metadata?
+
+* References
+
+** graphql
+- [[https://graphql.org/learn/schema/][schemas and types]]
+  
+** graphql-compose
+- [[https://graphql-compose.github.io/docs/api/][Docs]]
+- [[https://graphql-compose.github.io/docs/basics/understanding-relations.html][relations]]
+
+*** Examples
+- [[https://github.com/graphql-compose/graphql-compose-examples/blob/master/examples/northwind/models/customer.ts][northwind]]
+
+** mongoose
+- [[https://mongoosejs.com/docs/guides.html][Docs]]
+
+** video
+- [[https://www.youtube.com/watch?v=RXcY-OoGnQ8&t=366s][add GraphQL with graphql-compose]]
+

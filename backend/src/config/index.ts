@@ -14,4 +14,5 @@ export const {
   SECRET_KEY,
   LOG_FORMAT,
   LOG_DIR,
+  API_PATH,
 } = process.env;
