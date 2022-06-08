@@ -1,50 +1,44 @@
-// import { Arg, Mutation, Query, Resolver } from 'type-graphql';
-// import { CreateUserDto } from '@dtos';
-// import { UserRepository } from '@repositories';
-// import { User } from '@typedefs';
+import { Root, Arg, Mutation, Query, Resolver, FieldResolver } from 'type-graphql';
+import { CreateUserDto } from '@dtos';
+import { Note, NoteModel, User, UserModel } from '@entities';
+import { ObjectId } from 'mongodb';
 
-// @Resolver()
-// export class userResolver extends UserRepository {
-//   @Query(() => [User], {
-//     description: 'User find list',
-//   })
-//   async getUsers(): Promise<User[]> {
-//     const users: User[] = await this.userFindAll();
-//     return users;
-//   }
+@Resolver((of) => User)
+export class UserResolver {
+  // extends UserRepository {
 
-//   @Query(() => User, {
-//     description: 'User find by id',
-//   })
-//   async getUserById(@Arg('userId') userId: number): Promise<User> {
-//     const user: User = await this.userFindById(userId);
-//     return user;
-//   }
+  @FieldResolver()
+  async notes(@Root() user: User): Promise<Note[]> {
+    return await NoteModel.findById(user._id);
+  }
 
-//   @Mutation(() => User, {
-//     description: 'User create',
-//   })
-//   async createUser(@Arg('userData') userData: CreateUserDto): Promise<User> {
-//     const user: User = await this.userCreate(userData);
-//     return user;
-//   }
+  @Query(() => [User])
+  async getUsers(): Promise<User[]> {
+    return await UserModel.find({});
+  }
 
-//   @Mutation(() => User, {
-//     description: 'User update',
-//   })
-//   async updateUser(
-//     @Arg('userId') userId: number,
-//     @Arg('userData') userData: CreateUserDto,
-//   ): Promise<User> {
-//     const user: User = await this.userUpdate(userId, userData);
-//     return user;
-//   }
+  @Query(() => User, { nullable: true })
+  async getUserById(@Arg('userId') userId: number): Promise<User> {
+    return await UserModel.findById(userId);
+  }
 
-//   @Mutation(() => User, {
-//     description: 'User delete',
-//   })
-//   async deleteUser(@Arg('userId') userId: number): Promise<User> {
-//     const user: User = await this.userDelete(userId);
-//     return user;
-//   }
-// }
+  @Mutation(() => User)
+  async createUser(@Arg('userData') userData: CreateUserDto): Promise<User> {
+    return await UserModel.create(userData);
+  }
+
+  @Mutation(() => User)
+  async updateUser(
+    @Arg('userId') userId: ObjectId,
+    @Arg('userData') userData: CreateUserDto,
+  ): Promise<User> {
+    return await UserModel.findOneAndUpdate({ _id: userId }, userData);
+  }
+
+  @Mutation(() => User)
+  async deleteUser(@Arg('userId') userId: number): Promise<User> {
+    return await UserModel.findOneAndDelete({ _id: userId });
+  }
+}
+
+export default UserResolver;

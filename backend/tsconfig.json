@@ -1,8 +1,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "target": "es2017",
-    "lib": ["es2017", "esnext.asynciterable"],
+    "target": "es2018",
+    "lib": ["es2018", "esnext.asynciterable"],
     "typeRoots": ["node_modules/@types"],
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
@@ -33,7 +33,6 @@
       "@repositories": ["repositories"],
       "@resolvers": ["resolvers"],
       "@schemas": ["schemas"],
-      "@typedefs": ["typedefs"],
       "@utils": ["utils"]
     }
   },

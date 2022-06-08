@@ -1,34 +1,45 @@
-// import { CreateNoteDto } from '@/dtos';
-// import { Note } from '@/typedefs';
-// import { Arg, Mutation, Query, Resolver } from 'type-graphql';
-// import { notes } from '../tests';
+import { CreateNoteDto } from '@/dtos';
+import { Context } from '@/interfaces';
+import { Note, NoteModel, User, UserModel } from '@entities';
+import {
+  Ctx,
+  Root,
+  FieldResolver,
+  Arg,
+  Mutation,
+  Query,
+  Resolver,
+} from 'type-graphql';
 
-// @Resolver()
-// export class notesResolver {
-//   @Query(() => [Note], {
-//     description: 'List of notes',
-//   })
-//   async getNotes(): Promise<Note[]> {
-//     return notes;
-//   }
+@Resolver((of) => Note)
+export class NotesResolver {
+  @FieldResolver()
+  async author(@Root() note: Note): Promise<User> {
+    return await UserModel.findById(note.author);
+  }
 
-//   @Query(() => Note, {
-//     description: 'Get note by Id',
-//     nullable: true,
-//   })
-//   async getNoteById(@Arg('noteId') noteId: string): Promise<Note> {
-//     return notes.find((note) => note.id === noteId);
-//   }
+  @Query(() => [Note])
+  async getNotes(): Promise<Note[]> {
+    return await NoteModel.find({});
+  }
 
-//   @Mutation(() => Note, {
-//     description: 'Create note',
-//   })
-//   async createNote(@Arg('noteData') noteData: CreateNoteDto): Promise<Note> {
-//     const note = {
-//       ...noteData,
-//       id: String(notes.length + 1),
-//     };
-//     notes.push(note);
-//     return note;
-//   }
-// }
+  @Query(() => Note, { nullable: true })
+  async getNoteById(@Arg('noteId') noteId: string): Promise<Note> {
+    // return notes.find((note) => note.id === noteId);
+    return await NoteModel.findById(noteId);
+  }
+
+  @Mutation(() => Note)
+  async createNote(
+    @Arg('noteData') noteData: CreateNoteDto,
+    @Ctx() { user }: Context,
+  ): Promise<Note> {
+    const note = new NoteModel({
+      ...noteData,
+      author: user._id,
+    });
+
+    await note.save();
+    return note;
+  }
+}

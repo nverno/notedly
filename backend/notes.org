@@ -1,15 +1,16 @@
 #+TITLE: Notedly backend
 
 * Todo
-** TODO remove type-graphql
-- folders :: typedefs, resolvers
-- packages :: type-graphql, reflect-metadata?
 
 * References
 
 ** graphql
 - [[https://graphql.org/learn/schema/][schemas and types]]
   
+** type-graphql
+- [[https://typegraphql.com/docs/types-and-fields.html][fields and type]]
+- [[https://github.com/MichalLytek/type-graphql/tree/master/examples][examples]]
+
 ** graphql-compose
 - [[https://graphql-compose.github.io/docs/api/][Docs]]
 - [[https://graphql-compose.github.io/docs/basics/understanding-relations.html][relations]]

@@ -32,7 +32,7 @@
       "@repositories/*": ["repositories/*"],
       "@resolvers/*": ["resolvers/*"],
       "@schemas/*": ["schemas/*"],
-      "@typedefs/*": ["typedefs/*"],
+      "@entities/*": ["entities/*"],
       "@utils/*": ["utils/*"]
     }
   },

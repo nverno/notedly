@@ -11,13 +11,13 @@ import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import mongoose from 'mongoose';
-// import { buildSchema } from 'type-graphql';
+import { buildSchema } from 'type-graphql';
 // import { createConnection } from 'typeorm';
 import { API_PATH, NODE_ENV, PORT, ORIGIN, CREDENTIALS } from '@config';
 import { dbConnection } from '@databases';
 import { authMiddleware, authChecker, errorMiddleware } from '@middlewares';
 import { logger, responseLogger, errorLogger } from '@utils';
-import { schema } from '@schemas';
+// import { schema } from '@schemas';
 
 class App {
   public app: express.Application;
@@ -71,11 +71,11 @@ class App {
     this.app.use(cookieParser());
   }
 
-  private async initApolloServer(_resolvers) {
-    // const schema = await buildSchema({
-    //   resolvers,
-    //   authChecker,
-    // });
+  private async initApolloServer(resolvers) {
+    const schema = await buildSchema({
+      resolvers,
+      authChecker,
+    });
 
     const apolloServer = new ApolloServer({
       schema,

@@ -3,7 +3,7 @@ import { AuthChecker } from 'type-graphql';
 import { SECRET_KEY } from '@config';
 import { HttpException } from '@exceptions';
 import { RequestWithUser, DataStoredInToken } from '@interfaces';
-import { User } from '@models';
+import { UserModel } from '@entities';
 
 export const authMiddleware = async (req) => {
   try {
@@ -16,7 +16,7 @@ export const authMiddleware = async (req) => {
       const secretKey: string = SECRET_KEY;
       const resp = (await verify(Authorization, secretKey)) as DataStoredInToken;
       const userId = resp._id;
-      const user = await User.findById(userId);
+      const user = await UserModel.findById(userId);
       if (!user) throw new HttpException(401, 'Wrong authentication token');
     }
 
