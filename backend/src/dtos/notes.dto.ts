@@ -1,14 +1,22 @@
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { InputType, Field, ID } from 'type-graphql';
 import { Note } from '@entities';
 
 @InputType()
-export class CreateNoteDto implements Partial<Note> {
-  @Field((type) => ID)
+export class CreateNoteDto implements Partial<Omit<Note, 'author'>> {
+  @Field((type) => ID) // eslint-disable-line
   @IsString()
-  authorId: string;
+  author: string;
 
   @Field()
   @IsString()
   content: string;
+}
+
+@InputType()
+export class UpdateNoteDto implements Partial<Omit<Note, 'author'>> {
+  @Field()
+  @IsOptional()
+  @IsString()
+  content?: string;
 }

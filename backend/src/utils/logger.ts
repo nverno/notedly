@@ -65,7 +65,7 @@ logger.add(
 
 export const responseLogger = (request) => {
   const { query } = request.request;
-  logger.info(query);
+  // logger.info(query);
 };
 
 export const errorLogger = (error) => {

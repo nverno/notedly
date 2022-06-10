@@ -15,8 +15,14 @@ import { buildSchema } from 'type-graphql';
 // import { createConnection } from 'typeorm';
 import { API_PATH, NODE_ENV, PORT, ORIGIN, CREDENTIALS } from '@config';
 import { dbConnection } from '@databases';
-import { authMiddleware, authChecker, errorMiddleware } from '@middlewares';
+import {
+  typegooseMiddleware,
+  authMiddleware,
+  authChecker,
+  errorMiddleware,
+} from '@middlewares';
 import { logger, responseLogger, errorLogger } from '@utils';
+import path from 'path';
 // import { schema } from '@schemas';
 
 class App {
@@ -75,6 +81,8 @@ class App {
     const schema = await buildSchema({
       resolvers,
       authChecker,
+      emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
+      globalMiddlewares: [typegooseMiddleware],
     });
 
     const apolloServer = new ApolloServer({

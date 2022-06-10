@@ -1,28 +1,28 @@
-import { prop, getModelForClass } from '@typegoose/typegoose';
-import { Field, ID, ObjectType } from 'type-graphql';
+import 'reflect-metadata';
+import { prop as Property, Ref } from '@typegoose/typegoose';
+import { ID, Field, ObjectType } from 'type-graphql';
 import { User } from './users.entity';
-import { Ref } from '@interfaces';
+import { ObjectId } from 'mongodb';
+import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 
 @ObjectType()
-export class Note {
-  @Field((type) => ID) // eslint-disable-line
-  readonly _id: string;
+export class Note extends TimeStamps {
+  @Field(() => ID)
+  public readonly _id: ObjectId;
 
   @Field()
-  @prop({ required: true })
-  content: string;
+  @Property({ required: true })
+  public content: string;
 
-  @Field((type) => ID) // eslint-disable-line
-  @prop({ ref: User, required: true })
-  author: Ref<User>;
+  @Field(() => User) // eslint-disable-line
+  @Property({ ref: 'User', required: true })
+  public author: Ref<User>;
 
-  @Field((type) => Date)
-  @prop()
-  updatedAt: Date;
+  @Field(() => Date, { nullable: true })
+  @Property()
+  public updatedAt: Date;
 
-  @Field((type) => Date)
-  @prop()
-  createdAt: Date;
+  @Field(() => Date, { nullable: true })
+  @Property()
+  public createdAt: Date;
 }
-
-export const NoteModel = getModelForClass(Note);

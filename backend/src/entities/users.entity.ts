@@ -1,31 +1,27 @@
-import { ObjectId } from 'mongodb';
+import 'reflect-metadata';
 import { Field, ObjectType, ID } from 'type-graphql';
 import { Note } from './notes.entity';
-import { prop, getModelForClass } from '@typegoose/typegoose';
+import { prop as Property } from '@typegoose/typegoose';
+import { ObjectId } from 'mongodb';
 
 @ObjectType()
 export class User {
   @Field((type) => ID) // eslint-disable-line
-  readonly _id: ObjectId;
+  // @Property()
+  public readonly _id: ObjectId;
 
   @Field()
-  @prop({ required: true })
-  username: string;
-
-  @Field()
-  @prop({ required: true })
-  email: string;
+  @Property({ required: true, unique: true })
+  public username: string;
 
   @Field({ nullable: true })
-  @prop()
-  avatar?: string;
+  @Property()
+  public avatar?: string;
 
   @Field((type) => [Note]) // eslint-disable-line
-  @prop({ type: () => Note, default: [] })
-  notes: Note[];
+  @Property({ type: () => Note, default: [] })
+  public notes?: Note[];
 
-  @prop({ required: true })
-  password: string;
+  @Property({ required: true })
+  public password: string;
 }
-
-export const UserModel = getModelForClass(User);

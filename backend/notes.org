@@ -1,9 +1,8 @@
 #+TITLE: Notedly backend
 
-* Todo
-
 * References
 
+- [[https://github.com/javascripteverywhere/api/blob/dependabot/npm_and_yarn/ajv-6.12.6/solutions/07-Details/schema.js][javascript-everywhere]]
 ** graphql
 - [[https://graphql.org/learn/schema/][schemas and types]]
   
@@ -18,8 +17,17 @@
 *** Examples
 - [[https://github.com/graphql-compose/graphql-compose-examples/blob/master/examples/northwind/models/customer.ts][northwind]]
 
+** mongo
+- [[https://www.mongodb.com/docs/manual/][docs]]
+
+** prisma
+- [[https://github.com/prisma/prisma-examples][examples]]
+
 ** mongoose
 - [[https://mongoosejs.com/docs/guides.html][Docs]]
+
+** typegoose
+- [[https://typegoose.github.io/typegoose/docs/api/decorators/prop][decorators]]
 
 ** video
 - [[https://www.youtube.com/watch?v=RXcY-OoGnQ8&t=366s][add GraphQL with graphql-compose]]

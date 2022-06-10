@@ -28,6 +28,7 @@ export const dbConnection: { url: string; options: mongoose.ConnectOptions } = {
   url: `mongodb://${DB_HOST}:${DB_PORT}/${DB_DATABASE}`,
   options: {
     // useNewUrlParser: true,
-    autoCreate: true, // create index
+    autoIndex: true,
+    autoCreate: true,
   },
 };
