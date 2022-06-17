@@ -9,8 +9,8 @@ import {
   Resolver,
   Authorized,
 } from 'type-graphql';
-import { Note, NoteModel, User, UserModel } from '@models';
-import { CreateNoteDto, UpdateNoteDto } from '@/dtos';
+import { Note, NoteFeed, NoteModel, User, UserModel } from '@models';
+import { CreateNoteDto, NoteFeedDto, UpdateNoteDto } from '@/dtos';
 import { IContext } from '@/interfaces';
 import { ForbiddenError } from 'apollo-server-express';
 
@@ -24,6 +24,37 @@ export class NotesResolver {
   @FieldResolver()
   async favoritedBy(@Root() note: Note): Promise<User[]> {
     return await UserModel.find({ _id: { $in: note.favoritedBy } });
+  }
+
+  @Query(() => NoteFeed)
+  async noteFeed(
+    @Arg('feedData', { nullable: true }) feedData?: NoteFeedDto,
+  ): Promise<NoteFeed> {
+    const { cursor, limit = 10 } = feedData || {};
+    let hasNextPage = false;
+
+    // if there is a cursor, query will look for notes with ObjectId < than cursor
+    // if no cursor is passed, the default query will be empty
+    // this will pull the newest notes from the db
+    const cursorQuery = cursor ? { _id: { $lt: cursor } } : {};
+
+    // find limit + 1 notes, sorted newest to oldest
+    let notes = await NoteModel.find(cursorQuery)
+      .sort({ _id: -1 })
+      .limit(limit + 1);
+
+    if (notes.length > limit) {
+      hasNextPage = true;
+      notes = notes.slice(0, -1);
+    }
+
+    const newCursor = notes[notes.length - 1]?._id;
+
+    return {
+      notes,
+      cursor: newCursor ? String(newCursor) : null,
+      hasNextPage,
+    };
   }
 
   @Query(() => [Note])

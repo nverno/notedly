@@ -37,6 +37,8 @@ type Mutation {
 
   """User signup"""
   signUp(userData: CreateUserDto!): String!
+
+  """Favorite or un-favorite note"""
   toggleFavorite(noteId: String!): Note!
   updateNote(noteData: UpdateNoteDto!, noteId: String!): Note!
   updateUser(userData: UpdateUserDto!, userId: String!): User!
@@ -52,6 +54,17 @@ type Note {
   updatedAt: DateTime
 }
 
+type NoteFeed {
+  cursor: String
+  hasNextPage: Boolean!
+  notes: [Note!]!
+}
+
+input NoteFeedDto {
+  cursor: String
+  limit: Float
+}
+
 type Query {
   currentUser: User!
   getNoteById(noteId: String!): Note
@@ -59,6 +72,7 @@ type Query {
   getUser(username: String!): User!
   getUserById(userId: String!): User
   getUsers: [User!]!
+  noteFeed(feedData: NoteFeedDto): NoteFeed!
 }
 
 input UpdateNoteDto {

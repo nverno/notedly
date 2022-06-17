@@ -40,7 +40,9 @@ export class UserResolver {
     return await UserModel.findById(user._id);
   }
 
-  @Mutation(() => Note)
+  @Mutation(() => Note, {
+    description: 'Favorite or un-favorite note',
+  })
   @Authorized()
   async toggleFavorite(
     @Arg('noteId') noteId: string,

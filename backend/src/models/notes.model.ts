@@ -34,3 +34,18 @@ export class Note extends TimeStamps {
   @Property()
   public createdAt: Date;
 }
+
+@ObjectType()
+export class NoteFeed {
+  @Field((_type) => [Note])
+  @Property({ ref: () => Note, default: [] })
+  public notes: Ref<Note>[];
+
+  @Field({ nullable: true })
+  @Property({ required: false })
+  public cursor?: string;
+
+  @Field(() => Boolean)
+  @Property({ required: false })
+  public hasNextPage: boolean;
+}
