@@ -1,20 +1,31 @@
 import 'reflect-metadata';
-import { HttpException } from '@/exceptions';
 import {
-  //  Ctx,
+  Ctx,
   Root,
   FieldResolver,
   Arg,
   Mutation,
   Query,
   Resolver,
+  Authorized,
 } from 'type-graphql';
 import { Note, NoteModel, User, UserModel } from '@models';
 import { CreateNoteDto, UpdateNoteDto } from '@/dtos';
-// import { Context } from '@/interfaces';
+import { IContext } from '@/interfaces';
+import { ForbiddenError } from 'apollo-server-express';
 
 @Resolver((_of) => Note)
 export class NotesResolver {
+  @FieldResolver()
+  async author(@Root() note: Note): Promise<User> {
+    return await UserModel.findById(note.author);
+  }
+
+  @FieldResolver()
+  async favoritedBy(@Root() note: Note): Promise<User[]> {
+    return await UserModel.find({ _id: { $in: note.favoritedBy } });
+  }
+
   @Query(() => [Note])
   async getNotes(): Promise<Note[]> {
     return await NoteModel.find({});
@@ -26,36 +37,62 @@ export class NotesResolver {
   }
 
   @Mutation(() => Note)
+  @Authorized()
   async createNote(
     @Arg('noteData') noteData: CreateNoteDto,
-    // @Ctx() { user }: Context,
+    @Ctx() { user }: IContext,
   ): Promise<Note> {
-    const { author: authorId, ...data } = noteData;
-
-    const author = await UserModel.findById(authorId);
-    if (!author) throw new HttpException(400, 'author not found');
-
     const note = new NoteModel({
-      ...data,
-      author: author._id,
+      ...noteData,
+      author: user._id,
     });
 
     return await note.save({ timestamps: true });
   }
 
   @Mutation(() => Note)
+  @Authorized()
   async updateNote(
     @Arg('noteId') noteId: string,
     @Arg('noteData') noteData: UpdateNoteDto,
-  ): Promise<User> {
-    return await NoteModel.findOneAndUpdate({ _id: noteId }, noteData, {
-      new: true,
-      timestamps: true,
-    });
+    @Ctx() { user }: IContext,
+  ): Promise<Note> {
+    const note = await NoteModel.findById(noteId);
+
+    if (note && String(note.author) !== String(user._id))
+      throw new ForbiddenError("You don't have permissions to delete note");
+
+    return await NoteModel.findOneAndUpdate(
+      {
+        _id: noteId,
+      },
+      {
+        $set: {
+          content: noteData.content,
+        },
+      },
+      {
+        new: true,
+        timestamps: true,
+      },
+    );
   }
 
-  @FieldResolver()
-  async author(@Root() note: Note): Promise<User> {
-    return await UserModel.findById(note.author);
+  @Mutation(() => Boolean)
+  @Authorized()
+  async deleteNote(
+    @Arg('noteId') noteId: string,
+    @Ctx() { user }: IContext,
+  ): Promise<boolean> {
+    const note = await NoteModel.findById(noteId);
+    if (note && String(note.author) !== String(user._id))
+      throw new ForbiddenError("You don't have permissions to delete note");
+
+    try {
+      await note.remove();
+      return true;
+    } catch (err) {
+      return false;
+    }
   }
 }

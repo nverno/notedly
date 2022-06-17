@@ -2,8 +2,9 @@ import { verify } from 'jsonwebtoken';
 import { AuthChecker } from 'type-graphql';
 import { SECRET_KEY } from '@config';
 import { HttpException } from '@exceptions';
-import { RequestWithUser, DataStoredInToken } from '@interfaces';
+import { DataStoredInToken, IContext } from '@interfaces';
 import { UserModel } from '@models';
+import { convertDocument } from '.';
 
 export const authMiddleware = async (req) => {
   try {
@@ -15,9 +16,11 @@ export const authMiddleware = async (req) => {
     if (Authorization) {
       const secretKey: string = SECRET_KEY;
       const resp = (await verify(Authorization, secretKey)) as DataStoredInToken;
-      const userId = resp._id;
+      const userId = resp.id;
       const user = await UserModel.findById(userId);
-      if (!user) throw new HttpException(401, 'Wrong authentication token');
+      if (!user) return null;
+      // if (!user) throw new HttpException(401, 'Wrong authentication token');
+      return { ...convertDocument(user), roles: [] };
     }
 
     return null;
@@ -26,12 +29,18 @@ export const authMiddleware = async (req) => {
   }
 };
 
-export const authChecker: AuthChecker<RequestWithUser> = async ({
-  context: { user },
-}) => {
-  if (!user) {
-    throw new HttpException(404, 'Authentication token missing');
-  }
+export const authChecker: AuthChecker<IContext> = async (
+  { context: { user } },
+  roles: string[],
+) => {
+  // @Authorized()
+  if (roles.length === 0) return !!user;
 
-  return true;
+  if (!user) return false;
+
+  console.debug('[DEBUG] roles:', JSON.stringify(roles, null, 2));
+
+  if (user?.roles.some((role) => roles.includes(role))) return true;
+
+  return false;
 };

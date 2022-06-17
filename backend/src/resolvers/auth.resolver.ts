@@ -3,14 +3,11 @@ import { Authorized, Arg, Ctx, Mutation, Resolver } from 'type-graphql';
 import { CreateUserDto, LoginUserDto } from '@dtos';
 import { User, UserModel } from '@models';
 import { gravatar } from '@utils';
-import jwt from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 import { SECRET_KEY } from '@config';
-import {
-  AuthenticationError,
-  // ForbiddenError
-} from 'apollo-server-express';
+import { AuthenticationError } from 'apollo-server-express';
 
-@Resolver((_of) => User)
+@Resolver()
 export class AuthResolver {
   @Mutation(() => String, {
     description: 'User signup',
@@ -30,7 +27,7 @@ export class AuthResolver {
         timestamps: true,
       });
 
-      return jwt.sign({ id: user._id }, SECRET_KEY);
+      return sign({ id: user._id }, SECRET_KEY);
     } catch (err) {
       console.log(err);
       throw new Error('Error creating account');
@@ -50,7 +47,7 @@ export class AuthResolver {
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) throw new AuthenticationError('Invalid login credentials');
 
-    return jwt.sign({ id: user._id }, SECRET_KEY);
+    return sign({ id: user._id }, SECRET_KEY);
   }
 
   @Authorized()

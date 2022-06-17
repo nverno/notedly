@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Field, ObjectType, ID } from 'type-graphql';
 import { Note } from './notes.model';
-import { prop as Property } from '@typegoose/typegoose';
+import { prop as Property, Ref } from '@typegoose/typegoose';
 import { ObjectId } from 'mongodb';
 import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 
@@ -19,11 +19,19 @@ export class User extends TimeStamps {
   public avatar?: string;
 
   @Field((_type) => [Note])
-  @Property({ type: () => Note, default: [] })
-  public notes?: Note[];
+  @Property({ ref: () => Note, default: [] })
+  public notes?: Ref<Note>[];
+
+  @Field((_type) => [Note])
+  @Property({ ref: () => Note, default: [] })
+  public favorites?: Ref<Note>[];
 
   @Property({ required: true })
   public password: string;
+
+  @Field(() => [String])
+  @Property({ type: () => [String], default: [] })
+  public roles?: string[];
 
   @Field((_type) => Date, { nullable: true })
   @Property()

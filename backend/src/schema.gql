@@ -4,7 +4,6 @@
 # -----------------------------------------------
 
 input CreateNoteDto {
-  author: ID!
   content: String!
 }
 
@@ -27,7 +26,8 @@ input LoginUserDto {
 type Mutation {
   createNote(noteData: CreateNoteDto!): Note!
   createUser(userData: CreateUserDto!): User!
-  deleteUser(userId: String!): User!
+  deleteNote(noteId: String!): Boolean!
+  deleteUser(userId: String!): Boolean!
 
   """User login"""
   login(userData: LoginUserDto!): String!
@@ -37,6 +37,7 @@ type Mutation {
 
   """User signup"""
   signUp(userData: CreateUserDto!): String!
+  toggleFavorite(noteId: String!): Note!
   updateNote(noteData: UpdateNoteDto!, noteId: String!): Note!
   updateUser(userData: UpdateUserDto!, userId: String!): User!
 }
@@ -46,12 +47,16 @@ type Note {
   author: User!
   content: String!
   createdAt: DateTime
+  favoriteCount: Int!
+  favoritedBy: [User!]!
   updatedAt: DateTime
 }
 
 type Query {
+  currentUser: User!
   getNoteById(noteId: String!): Note
   getNotes: [Note!]!
+  getUser(username: String!): User!
   getUserById(userId: String!): User
   getUsers: [User!]!
 }
@@ -69,7 +74,9 @@ type User {
   _id: ID!
   avatar: String
   createdAt: DateTime
+  favorites: [Note!]!
   notes: [Note!]!
+  roles: [String!]!
   updatedAt: DateTime
   username: String!
 }

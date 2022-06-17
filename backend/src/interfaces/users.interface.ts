@@ -1,5 +1,9 @@
+import { ObjectId } from 'mongodb';
+
+type UserRoles = 'ADMIN' | 'USER' | 'MODERATOR';
+
 export interface IUser {
-  id: number;
-  email: string;
-  password: string;
+  _id: ObjectId;
+  username: string;
+  roles: UserRoles[];
 }
