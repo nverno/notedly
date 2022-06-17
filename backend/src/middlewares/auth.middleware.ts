@@ -3,7 +3,7 @@ import { AuthChecker } from 'type-graphql';
 import { SECRET_KEY } from '@config';
 import { HttpException } from '@exceptions';
 import { RequestWithUser, DataStoredInToken } from '@interfaces';
-import { UserModel } from '@entities';
+import { UserModel } from '@models';
 
 export const authMiddleware = async (req) => {
   try {

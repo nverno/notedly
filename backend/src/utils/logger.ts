@@ -64,7 +64,7 @@ logger.add(
 );
 
 export const responseLogger = (request) => {
-  const { query } = request.request;
+  const { query: _ } = request.request;
   // logger.info(query);
 };
 

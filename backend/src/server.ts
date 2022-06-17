@@ -1,10 +1,10 @@
 import App from '@/app';
 import { validateEnv } from '@utils';
 
-import { authResolver, UserResolver, NotesResolver } from '@resolvers';
+import { AuthResolver, UserResolver, NotesResolver } from '@resolvers';
 
 validateEnv();
 
-const app = new App([authResolver, UserResolver, NotesResolver]);
+const app = new App([AuthResolver, UserResolver, NotesResolver]);
 
 app.listen();

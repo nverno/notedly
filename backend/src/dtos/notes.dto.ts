@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from 'class-validator';
 import { InputType, Field, ID } from 'type-graphql';
-import { Note } from '@entities';
+import { Note } from '@models';
 
 @InputType()
 export class CreateNoteDto implements Partial<Omit<Note, 'author'>> {

@@ -9,11 +9,11 @@ import {
   Query,
   Resolver,
 } from 'type-graphql';
-import { Note, NoteModel, User, UserModel } from '@entities';
+import { Note, NoteModel, User, UserModel } from '@models';
 import { CreateNoteDto, UpdateNoteDto } from '@/dtos';
 // import { Context } from '@/interfaces';
 
-@Resolver((of) => Note) // eslint-disable-line
+@Resolver((_of) => Note)
 export class NotesResolver {
   @Query(() => [Note])
   async getNotes(): Promise<Note[]> {
@@ -22,7 +22,6 @@ export class NotesResolver {
 
   @Query(() => Note, { nullable: true })
   async getNoteById(@Arg('noteId') noteId: string): Promise<Note> {
-    // return notes.find((note) => note.id === noteId);
     return await NoteModel.findById(noteId);
   }
 
@@ -51,6 +50,7 @@ export class NotesResolver {
   ): Promise<User> {
     return await NoteModel.findOneAndUpdate({ _id: noteId }, noteData, {
       new: true,
+      timestamps: true,
     });
   }
 

@@ -1,8 +1,8 @@
 import { Root, Arg, Mutation, Query, Resolver, FieldResolver } from 'type-graphql';
 import { CreateUserDto, UpdateUserDto } from '@dtos';
-import { Note, NoteModel, User, UserModel } from '@entities';
+import { Note, NoteModel, User, UserModel } from '@models';
 
-@Resolver((of) => User)
+@Resolver((_of) => User)
 export class UserResolver {
   @FieldResolver()
   async notes(@Root() user: User): Promise<Note[]> {
@@ -22,7 +22,7 @@ export class UserResolver {
   @Mutation(() => User)
   async createUser(@Arg('userData') userData: CreateUserDto): Promise<User> {
     const user = new UserModel(userData);
-    await user.save();
+    await user.save({ timestamps: true });
     return user;
   }
 
@@ -33,6 +33,7 @@ export class UserResolver {
   ): Promise<User> {
     return await UserModel.findOneAndUpdate({ _id: userId }, userData, {
       new: true,
+      timestamps: true,
     });
   }
 

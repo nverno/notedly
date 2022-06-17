@@ -1,4 +1,4 @@
-import { User } from '@/entities';
+import { User } from '@/models';
 
 export interface Context {
   user: User;
