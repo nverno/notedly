@@ -29,18 +29,18 @@ type Mutation {
   deleteNote(noteId: String!): Boolean!
   deleteUser(userId: String!): Boolean!
 
-  """User login"""
-  login(userData: LoginUserDto!): String!
-
   """User logout"""
   logout: User!
+
+  """User signIn"""
+  signIn(userData: LoginUserDto!): String!
 
   """User signup"""
   signUp(userData: CreateUserDto!): String!
 
   """Favorite or un-favorite note"""
   toggleFavorite(noteId: String!): Note!
-  updateNote(noteData: UpdateNoteDto!, noteId: String!): Note!
+  updateNote(noteData: UpdateNoteDto!): Note!
   updateUser(userData: UpdateUserDto!, userId: String!): User!
 }
 
@@ -67,16 +67,17 @@ input NoteFeedDto {
 
 type Query {
   currentUser: User!
-  getNoteById(noteId: String!): Note
-  getNotes: [Note!]!
   getUser(username: String!): User!
   getUserById(userId: String!): User
   getUsers: [User!]!
+  note(noteId: String!): Note
   noteFeed(feedData: NoteFeedDto): NoteFeed!
+  notes: [Note!]!
 }
 
 input UpdateNoteDto {
   content: String!
+  noteId: String!
 }
 
 input UpdateUserDto {

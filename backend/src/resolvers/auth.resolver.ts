@@ -35,17 +35,17 @@ export class AuthResolver {
   }
 
   @Mutation(() => String, {
-    description: 'User login',
+    description: 'User signIn',
   })
-  async login(@Arg('userData') userData: LoginUserDto): Promise<string> {
+  async signIn(@Arg('userData') userData: LoginUserDto): Promise<string> {
     let { username, password } = userData;
     if (username) username = username.trim().toLowerCase();
 
     const user = await UserModel.findOne({ username });
-    if (!user) throw new AuthenticationError('Invalid login credentials');
+    if (!user) throw new AuthenticationError('Invalid signIn credentials');
 
     const valid = await bcrypt.compare(password, user.password);
-    if (!valid) throw new AuthenticationError('Invalid login credentials');
+    if (!valid) throw new AuthenticationError('Invalid signIn credentials');
 
     return sign({ id: user._id }, SECRET_KEY);
   }

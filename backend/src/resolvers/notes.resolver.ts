@@ -58,12 +58,12 @@ export class NotesResolver {
   }
 
   @Query(() => [Note])
-  async getNotes(): Promise<Note[]> {
+  async notes(): Promise<Note[]> {
     return await NoteModel.find({});
   }
 
   @Query(() => Note, { nullable: true })
-  async getNoteById(@Arg('noteId') noteId: string): Promise<Note> {
+  async note(@Arg('noteId') noteId: string): Promise<Note> {
     return await NoteModel.findById(noteId);
   }
 
@@ -84,10 +84,10 @@ export class NotesResolver {
   @Mutation(() => Note)
   @Authorized()
   async updateNote(
-    @Arg('noteId') noteId: string,
     @Arg('noteData') noteData: UpdateNoteDto,
     @Ctx() { user }: IContext,
   ): Promise<Note> {
+    const { noteId } = noteData;
     const note = await NoteModel.findById(noteId);
 
     if (note && String(note.author) !== String(user._id))

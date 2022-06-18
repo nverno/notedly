@@ -6,14 +6,18 @@ import { Note } from '@models';
 export class CreateNoteDto implements Partial<Omit<Note, 'author'>> {
   @Field()
   @IsString()
-  content: string;
+  public content: string;
 }
 
 @InputType()
 export class UpdateNoteDto implements Partial<Omit<Note, 'author'>> {
   @Field()
   @IsString()
-  content: string;
+  public noteId: string;
+
+  @Field()
+  @IsString()
+  public content: string;
 }
 
 @InputType()

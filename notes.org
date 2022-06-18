@@ -32,3 +32,11 @@
 ** video
 - [[https://www.youtube.com/watch?v=RXcY-OoGnQ8&t=366s][add GraphQL with graphql-compose]]
 
+** icons
+- [[https://fonts.google.com/icons][google material icons]]
+
+** apollo
+
+*** client
+- [[https://www.apollographql.com/docs/react/local-state/managing-state-with-field-policies][local-state]]
+

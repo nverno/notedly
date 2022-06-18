@@ -30,6 +30,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.8",
     "@reduxjs/toolkit": "^1.8.1",
     "ahooks": "^3.3.10",
     "class-validator": "^0.13.2",
@@ -38,7 +39,7 @@
     "moment": "^2.29.3",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "react-redux": "^8.0.1",
+    "react-markdown": "^8.0.3",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0"
   },

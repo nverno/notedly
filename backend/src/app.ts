@@ -13,12 +13,12 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import mongoose from 'mongoose';
 import { buildSchema } from 'type-graphql';
-import {
-  createComplexityRule,
-  simpleEstimator,
-  fieldExtensionsEstimator,
-} from 'graphql-query-complexity';
-import depthLimit from 'graphql-depth-limit';
+// import {
+//   createComplexityRule,
+//   simpleEstimator,
+//   fieldExtensionsEstimator,
+// } from 'graphql-query-complexity';
+// import depthLimit from 'graphql-depth-limit';
 import { API_PATH, NODE_ENV, PORT, ORIGIN, CREDENTIALS } from '@config';
 import { dbConnection } from '@databases';
 import {
@@ -93,19 +93,20 @@ class App {
 
     const apolloServer = new ApolloServer({
       schema,
-      validationRules: [
-        depthLimit(5),
-        createComplexityRule({
-          maximumComplexity: 1000,
-          estimators: [
-            // Using fieldExtensionsEstimator is mandatory to make it work with type-graphql.
-            fieldExtensionsEstimator(),
-            simpleEstimator({
-              defaultComplexity: 1,
-            }),
-          ],
-        }),
-      ],
+      // FIXME: failing when db is empty
+      // validationRules: [
+      //   depthLimit(5),
+      //   createComplexityRule({
+      //     maximumComplexity: 1000,
+      //     estimators: [
+      //       // Using fieldExtensionsEstimator is mandatory to make it work with type-graphql.
+      //       fieldExtensionsEstimator(),
+      //       simpleEstimator({
+      //         defaultComplexity: 1,
+      //       }),
+      //     ],
+      //   }),
+      // ],
       plugins: [
         this.env === 'production'
           ? ApolloServerPluginLandingPageProductionDefault({ footer: false })

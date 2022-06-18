@@ -9,7 +9,7 @@ services:
       context: ./
       target: production-build-stage
       dockerfile: Dockerfile
-    container_name: caashapp
+    container_name: notedly
     ports:
       - '3000:3000'
     volumes:
