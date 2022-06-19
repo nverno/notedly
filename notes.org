@@ -40,3 +40,6 @@
 *** client
 - [[https://www.apollographql.com/docs/react/local-state/managing-state-with-field-policies][local-state]]
 
+** deploy
+- [[https://dashboard.heroku.com/apps/notedly-service/resources][notedly-service]]
+- [[https://cloud.mongodb.com/v2/5e66afd86a800672d58086b9#metrics/replicaSet/62afaca0261e0402ff34554a/explorer/prod/users/find][atlasdb]]

@@ -22,10 +22,10 @@
 // };
 
 import mongoose from 'mongoose';
-import { DB_HOST, DB_PORT, DB_DATABASE } from '@config';
+import { DB_HOST, DB_PORT, DB_DATABASE, MONGO_URI } from '@config';
 
 export const dbConnection: { url: string; options: mongoose.ConnectOptions } = {
-  url: `mongodb://${DB_HOST}:${DB_PORT}/${DB_DATABASE}`,
+  url: MONGO_URI || `mongodb://${DB_HOST}:${DB_PORT}/${DB_DATABASE}`,
   options: {
     // useNewUrlParser: true,
     autoIndex: true,

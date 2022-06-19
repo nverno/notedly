@@ -14,8 +14,10 @@ export const NoteList: FC<NoteListProps> = (props) => {
     <div>
       {notes.map((note) => (
         <div key={note._id} className='note-wrapper'>
-          <NoteItem note={note} />
-          <Link to={`/notes/${note._id}`}>Permalink</Link>
+          <NoteItem className='mb-2' note={note} />
+          <Link className='button-link' to={`/notes/${note._id}`}>
+            Permalink
+          </Link>
         </div>
       ))}
     </div>

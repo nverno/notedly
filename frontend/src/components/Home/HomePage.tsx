@@ -46,7 +46,7 @@ export const HomePage: FC<HomePageProps> = (_props) => {
       <NoteList notes={notes} />
       {data.noteFeed.hasNextPage && (
         <button
-          className='button'
+          className='button m-[auto] rounded-md'
           onClick={() =>
             fetchMore({
               variables: {

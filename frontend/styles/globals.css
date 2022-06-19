@@ -37,6 +37,9 @@ h6 {
   font-size:.67em;
   margin:2.33em 0
 }
+a {
+  text-decoration: underline;
+}
 
 .logo-text {
   font-family: 'Tangerine', serif;
@@ -148,7 +151,7 @@ h6 {
 
 .note {
   max-width: 800px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
 
   .metadata {
     @media(min-width: 500px) {
@@ -175,13 +178,28 @@ h6 {
   color: #fff;
   background-color: #0077cc;
   cursor: pointer;
-
+  /* margin: 0 auto; */
+  
   :hover {
     opacity: 0.8;
   }
 
   :active {
     background-color: #005fa3;
+  }
+}
+
+.button-link {
+  background: none;
+  color: #0077cc;
+  border: none;
+  padding: 0;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+
+  :hover, :active {
+    color: #004499;
   }
 }
 

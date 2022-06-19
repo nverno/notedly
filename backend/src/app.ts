@@ -76,7 +76,12 @@ class App {
       this.app.use(helmet());
     }
 
-    this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
+    this.app.use(
+      cors({
+        origin: ORIGIN,
+        credentials: CREDENTIALS,
+      }),
+    );
     this.app.use(compression());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));

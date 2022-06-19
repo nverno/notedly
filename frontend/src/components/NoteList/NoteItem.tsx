@@ -4,20 +4,22 @@ import moment from 'moment';
 import { IS_LOGGED_IN, Note } from '../../store';
 import { useQuery } from '@apollo/client';
 import NoteUser from '../Note/NoteUser';
+import classnames from 'classnames';
 
 export interface NoteItemProps {
   note: Note;
+  className?: string;
 }
 
 const NoteItem: FC<NoteItemProps> = (props) => {
-  const { note } = props;
+  const { note, className } = props;
   const { data, loading, error } = useQuery(IS_LOGGED_IN);
 
   if (loading) return null;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <article className='note'>
+    <article className={classnames('note', className)}>
       <div className='metadata mb-3'>
         <div className='pr-4'>
           <img

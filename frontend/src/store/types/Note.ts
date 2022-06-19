@@ -7,14 +7,14 @@ export interface Note {
   createdAt: Date;
   updatedAt: Date;
   favoriteCount: number;
-  favoritedBy: Partial<User>[];
+  favoritedBy: User[];
 }
 
 export interface NoteFeed {
   cursor?: string;
   limit?: number;
   hasNextPage: boolean;
-  notes: Partial<Note>[];
+  notes: Note[];
 }
 
 export interface CreateNoteDto {

@@ -18,6 +18,7 @@ export const {
   DB_USER,
   DB_PASSWORD,
   DB_DATABASE,
+  MONGO_URI,
   SECRET_KEY,
   LOG_FORMAT,
   LOG_DIR,

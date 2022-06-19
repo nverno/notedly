@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_MY_FAVORITES } from '../../store';
+import { NoteList } from '../NoteList';
 
 export interface FavoritesPageProps {}
 
