@@ -7,7 +7,7 @@ COPY . ./app
 
 WORKDIR /app
 
-RUN npm install -g npm@latest && npm install --legacy-peer-deps
+RUN npm install -g npm@latest && npm install --legacy-peer-deps && npm run build:tsc
 
 EXPOSE 5005
 

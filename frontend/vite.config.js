@@ -34,7 +34,7 @@ const getProcessEnv = ({ mode, command }) => {
     return { 'process.env': 'process.env' };
   }
 
-  const reactAppEnv = loadEnv(mode, '', ['REACT_APP_']);
+  const reactAppEnv = loadEnv(mode, '', ['REACT_APP_', 'VITE_']);
 
   if (Object.keys(reactAppEnv).length) {
     return Object.fromEntries(
@@ -129,7 +129,7 @@ const createConfig = (options = {}) => {
         ...getProcessEnv(env),
       },
 
-      envPrefix: 'REACT_APP_',
+      envPrefix: ['VITE_', 'REACT_APP_'],
 
       resolve: {
         alias: [

@@ -20,7 +20,12 @@ const container = document.getElementById('root');
 const root = createRoot(container);
 
 // Setup apollo client
-const httpLink = createHttpLink({ uri: process.env.REACT_APP_API_URI });
+const httpLink = createHttpLink({
+  uri: import.meta.env.VITE_API_URI,
+  /* process.env.NODE_ENV === 'development'
+   *     ? 'http://localhost:5005/graphql'
+   *     : 'https://notedly-service.herokuapp.com' */
+});
 
 // send auth header in all requests
 const authLink = setContext((_, { headers }) => ({
